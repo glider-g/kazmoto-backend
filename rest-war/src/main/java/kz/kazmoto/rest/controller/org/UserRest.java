@@ -39,11 +39,9 @@ public class UserRest {
     @Path("registration")
     public Response registration(JsonNode bodyNode) {
         User user = userRegisterDer.convert(bodyNode);
-
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-        userEjb.create(user);
-
-        return Response.ok(userSer.convert(userEjb.findById(user.getId()))).build();
+        User savedUser = userEjb.create(user);
+        return Response.ok(userSer.convert(savedUser)).build();
     }
 
     @POST

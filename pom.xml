@@ -11,5 +11,6 @@
         <module>rest-war</module>
     <module>global-ejb</module>
   <module>organization-ejb</module>
+  <module>nomenclature-ejb</module>
   </modules>
 </project>

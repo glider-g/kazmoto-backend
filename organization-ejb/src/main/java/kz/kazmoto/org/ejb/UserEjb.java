@@ -27,20 +27,20 @@ public class UserEjb {
         q.setParameter("username", username);
         return EJBUtils.getSingleResult(q);
     }
-    public void create(User user){
+    public User create(User user){
         User existUser = findByUsername(user.getUsername());
         if (existUser != null) throw new UniqueFieldCodeException("username already exist");
 
-        em.persist(user);
+        return em.merge(user);
     }
 
-    public void update(User editedUser){
+    public User update(User editedUser){
         User user = findById(editedUser.getId());
 
         user.setFirstName(editedUser.getFirstName());
         user.setLastName(editedUser.getLastName());
 
-        em.merge(user);
+        return em.merge(user);
     }
 
     public void updatedPassword(){
