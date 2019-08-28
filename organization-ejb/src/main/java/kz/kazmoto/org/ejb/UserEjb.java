@@ -4,6 +4,7 @@ package kz.kazmoto.org.ejb;
 
 import kz.kazmoto.glob.exceptions.UniqueFieldCodeException;
 import kz.kazmoto.glob.utils.EJBUtils;
+import kz.kazmoto.glob.utils.UniqueFieldChecker;
 import kz.kazmoto.org.model.User;
 
 import javax.ejb.LocalBean;
@@ -18,6 +19,9 @@ public class UserEjb {
     @PersistenceContext(unitName = "kazmoto-org")
     private EntityManager em;
 
+    private UniqueFieldChecker<User> fieldChecker = new UniqueFieldChecker<User>()
+            .addChecker("username", user -> findByUsername(user.getUsername()));
+
     public User findById(Long id){
         return em.find(User.class, id);
     }
@@ -28,17 +32,13 @@ public class UserEjb {
         return EJBUtils.getSingleResult(q);
     }
     public User create(User user){
-        User existUser = findByUsername(user.getUsername());
-        if (existUser != null) throw new UniqueFieldCodeException("username already exist");
+        fieldChecker.validate(user, false);
 
         return em.merge(user);
     }
 
-    public User update(User editedUser){
-        User user = findById(editedUser.getId());
-
-        user.setFirstName(editedUser.getFirstName());
-        user.setLastName(editedUser.getLastName());
+    public User update(User user){
+        fieldChecker.validate(user, true);
 
         return em.merge(user);
     }
