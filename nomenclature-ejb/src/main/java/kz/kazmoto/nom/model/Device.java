@@ -12,10 +12,14 @@ import java.util.Objects;
         @NamedQuery(name = "Device.findAll",
                 query = "SELECT d " +
                         "FROM Device d "),
-        @NamedQuery(name = "Device.findByName",
+        @NamedQuery(name = "Device.findByNameExact",
                 query = "SELECT d " +
                         "FROM Device d " +
-                        "WHERE d.name = :name ")
+                        "WHERE d.name = :name "),
+        @NamedQuery(name = "Device.findByCode",
+                query = "SELECT d " +
+                        "FROM Device d " +
+                        "WHERE d.code = :code ")
 })
 public class Device {
 

@@ -5,25 +5,26 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-
 @Entity
 @Table(name = "nom__product", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"model", "device_id", "product_group_id"}),
+        @UniqueConstraint(columnNames = {"name", "device_id", "product_group_id"}),
 })
 @NamedQueries({
         @NamedQuery(name = "Product.findByProductGroup",
                 query = "SELECT p FROM Product p " +
-                        "WHERE p.productGroup.id = :productGroupId "),
+                        "WHERE p.category.id = :productGroupId "),
         @NamedQuery(name = "Product.findByFilter",
                 query = "SELECT p FROM Product p " +
-                        "WHERE p.model LIKE CONCAT('%',:model,'%') " +
-                        "AND p.productGroup.name LIKE CONCAT('%',:name,'%') " +
+                        "WHERE p.name LIKE CONCAT('%',:name,'%') " +
+                        "AND p.category.name LIKE CONCAT('%',:categoryName,'%') " +
+                        "AND p.barcode LIKE CONCAT('%',:barcode,'%') " +
+                        "AND (:categoryId IS NULL OR p.category.id = :categoryId) " +
                         "AND (:deviceId IS NULL OR p.device.id = :deviceId) " +
-                        "AND p.barcode LIKE CONCAT('%',:barcode,'%') "),
-        @NamedQuery(name = "Product.findByUniques",
+                        ""),
+        @NamedQuery(name = "Product.findByModelAndCategoryAndDevice",
                 query = "SELECT p FROM Product p " +
-                        "WHERE p.model = :model " +
-                        "AND p.productGroup.id = :productGroupId " +
+                        "WHERE p.name = :name " +
+                        "AND p.category.id = :categoryId " +
                         "AND p.device.id = :deviceId "),
 })
 public class Product {
@@ -33,8 +34,8 @@ public class Product {
     private Long id;
 
     @NotNull
-    @Column(name = "model")
-    private String model;
+    @Column(name = "name")
+    private String name;
 
     @NotNull
     @Column(name = "barcode", unique = true, updatable = false)
@@ -42,13 +43,13 @@ public class Product {
 
     @NotNull
     @ManyToOne()
-    @JoinColumn(name = "device_id")
-    private Device device;
+    @JoinColumn(name = "product_group_id")
+    private Category category;
 
     @NotNull
     @ManyToOne()
-    @JoinColumn(name = "product_group_id")
-    private ProductGroup productGroup;
+    @JoinColumn(name = "device_id")
+    private Device device;
 
     private BigDecimal price;
 
@@ -62,12 +63,12 @@ public class Product {
         this.id = id;
     }
 
-    public String getModel() {
-        return model;
+    public String getName() {
+        return name;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setName(String model) {
+        this.name = model;
     }
 
     public String getBarcode() {
@@ -86,12 +87,12 @@ public class Product {
         this.device = device;
     }
 
-    public ProductGroup getProductGroup() {
-        return productGroup;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setProductGroup(ProductGroup productGroup) {
-        this.productGroup = productGroup;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public BigDecimal getPrice() {
@@ -123,3 +124,4 @@ public class Product {
         return Objects.hash(id);
     }
 }
+

@@ -2,6 +2,7 @@ package kz.kazmoto.nom.ejb;
 
 import kz.kazmoto.glob.exceptions.UniqueFieldCodeException;
 import kz.kazmoto.glob.utils.EJBUtils;
+import kz.kazmoto.glob.utils.UniqueFieldChecker;
 import kz.kazmoto.nom.model.Device;
 
 import javax.ejb.LocalBean;
@@ -10,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Yernar 23.07.2019
@@ -20,6 +22,11 @@ public class DeviceEjb {
     @PersistenceContext(unitName = "kazmoto-nom")
     private EntityManager em;
 
+    private UniqueFieldChecker<Device> fieldChecker = new UniqueFieldChecker<Device>()
+            .addChecker("name", device -> findByNameExact(device.getName()))
+            .addChecker("code", device -> findByCode(device.getCode()));
+
+
     public Device findById(Long id) {
         return em.find(Device.class, id);
     }
@@ -29,25 +36,27 @@ public class DeviceEjb {
         return q.getResultList();
     }
 
-    private Device findByName(String name) {
-        TypedQuery<Device> q = em.createNamedQuery("Device.findByName", Device.class);
+    private Device findByNameExact(String name) {
+        TypedQuery<Device> q = em.createNamedQuery("Device.findByNameExact", Device.class);
         q.setParameter("name", name);
         return EJBUtils.getSingleResult(q);
     }
 
+    private Device findByCode(Integer code) {
+        TypedQuery<Device> q = em.createNamedQuery("Device.findByCode", Device.class);
+        q.setParameter("code", code);
+        return EJBUtils.getSingleResult(q);
+    }
+
     public Device create(Device device) {
-        Device oldDevice = findByName(device.getName());
-        if (oldDevice != null) throw new UniqueFieldCodeException("Device with this name already exist");
+        fieldChecker.validate(device, false);
 
         return em.merge(device);
     }
 
-    public Device update(Device editedDevice) {
-        Device otherDevice = findByName(editedDevice.getName());
-        if (otherDevice != null && !otherDevice.equals(editedDevice)) throw new UniqueFieldCodeException("Device with this name already exist");
+    public Device update(Device device) {
+        fieldChecker.validate(device, true);
 
-        Device device = findById(editedDevice.getId());
-        device.setName(editedDevice.getName());
         return em.merge(device);
     }
 

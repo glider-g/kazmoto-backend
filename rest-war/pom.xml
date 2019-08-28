@@ -38,12 +38,19 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
+            <!--suppress MavenModelInspection -->
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>kz.kazmoto</groupId>
             <artifactId>organization-ejb</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>kz.kazmoto</groupId>
+            <artifactId>nomenclature-ejb</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

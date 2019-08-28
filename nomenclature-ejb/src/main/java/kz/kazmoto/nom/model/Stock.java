@@ -2,6 +2,7 @@ package kz.kazmoto.nom.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.math.BigInteger;
 
 
@@ -15,7 +16,7 @@ import java.math.BigInteger;
                 query = "SELECT s.quantity FROM Stock s " +
                         "WHERE s.product.id = :productId "),
 })
-public class Stock {
+public class Stock implements Serializable {
     @Id
     @OneToOne()
     @JoinColumn(name = "product_id")

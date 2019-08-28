@@ -4,16 +4,16 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "nom__product_group")
+@Table(name = "nom__category")
 @NamedQueries({
-        @NamedQuery(name = "ProductGroup.findByNameLike",
-                query = "SELECT pg FROM ProductGroup pg " +
+        @NamedQuery(name = "Category.findByName",
+                query = "SELECT pg FROM Category pg " +
                         "WHERE pg.name LIKE CONCAT('%',:name,'%') "),
-        @NamedQuery(name = "ProductGroup.findByName",
-                query = "SELECT pg FROM ProductGroup pg " +
+        @NamedQuery(name = "Category.findByNameExact",
+                query = "SELECT pg FROM Category pg " +
                         "WHERE pg.name = :name "),
 })
-public class ProductGroup{
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
