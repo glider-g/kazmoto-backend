@@ -2,9 +2,11 @@ package kz.kazmoto.rest.serializer.nom;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import kz.kazmoto.nom.model.Device;
-import kz.kazmoto.rest.utility.jackson.Serializer;
+import kz.kazmoto.rest.utility.Serializer;
 
 import javax.ejb.Stateless;
+
+import static kz.kazmoto.rest.utility.JsonUtils.createObjectNode;
 
 @Stateless
 public class DeviceSer extends Serializer<Device> {

@@ -1,4 +1,4 @@
-package kz.kazmoto.rest.utility.jackson;
+package kz.kazmoto.rest.utility;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -7,13 +7,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.List;
 
 public abstract class Serializer<T>{
-    public static ObjectNode createObjectNode() {
-        return new ObjectMapper().createObjectNode();
-    }
-    public static ArrayNode createArrayNode() {
-        return new ObjectMapper().createArrayNode();
-    }
-
     public ObjectNode convert(T t){
         return serialize(t);
     }

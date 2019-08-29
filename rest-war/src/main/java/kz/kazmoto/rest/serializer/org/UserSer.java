@@ -2,7 +2,9 @@ package kz.kazmoto.rest.serializer.org;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import kz.kazmoto.org.model.User;
-import kz.kazmoto.rest.utility.jackson.Serializer;
+import kz.kazmoto.rest.utility.Serializer;
+
+import static kz.kazmoto.rest.utility.JsonUtils.createObjectNode;
 
 public class UserSer extends Serializer<User> {
     @Override

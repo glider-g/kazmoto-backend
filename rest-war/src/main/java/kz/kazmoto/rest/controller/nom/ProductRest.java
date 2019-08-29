@@ -1,22 +1,23 @@
 package kz.kazmoto.rest.controller.nom;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import kz.kazmoto.glob.exceptions.BadRequestCodeException;
 import kz.kazmoto.glob.exceptions.NotFoundCodeException;
 import kz.kazmoto.nom.ejb.CategoryEjb;
 import kz.kazmoto.nom.ejb.DeviceEjb;
 import kz.kazmoto.nom.ejb.ProductEjb;
-import kz.kazmoto.nom.model.Device;
 import kz.kazmoto.nom.model.Product;
-import kz.kazmoto.rest.serializer.nom.ProductDer;
 import kz.kazmoto.rest.serializer.nom.ProductSer;
+import kz.kazmoto.rest.utility.JsonUtils;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.math.BigDecimal;
 import java.util.List;
+
+import static kz.kazmoto.rest.utility.JsonUtils.getValue;
+import static kz.kazmoto.rest.utility.JsonUtils.getValue;
 
 
 @Path("nom/products")
@@ -28,12 +29,6 @@ public class ProductRest {
     @EJB private DeviceEjb deviceEjb;
 
     private ProductSer productSer = new ProductSer();
-    private ProductDer productDer;
-
-    @PostConstruct
-    public void init() {
-        productDer = new ProductDer(categoryEjb, deviceEjb);
-    }
 
     @GET
     public Response list(
@@ -57,8 +52,14 @@ public class ProductRest {
     }
 
     @POST
-    public Response create(JsonNode bodyNode) {
-        Product product = productDer.convert(bodyNode);
+    public Response create(JsonNode reqBody) {
+        Product product = new Product();
+
+        product.setName(getValue(reqBody,"name", String.class));
+        product.setCategory(JsonUtils.getValue(reqBody, "category.id", categoryEjb));
+        product.setDevice(JsonUtils.getValue(reqBody, "device.id", deviceEjb));
+        product.setPrice(getValue(reqBody,"price", BigDecimal.class));
+        product.setPurchasePrice(getValue(reqBody,"purchasePrice", BigDecimal.class));
 
         Product savedProduct = productEjb.create(product);
         return Response.ok(productSer.convert(savedProduct)).build();
@@ -66,18 +67,17 @@ public class ProductRest {
 
     @POST
     @Path("{id}")
-    public Response update(@PathParam("id") Long id, JsonNode bodyNode) {
+    public Response update(@PathParam("id") Long id, JsonNode reqBody) {
         Product product = productEjb.findById(id);
         if (product == null) {
             throw new NotFoundCodeException("Product with this id not exist");
         }
-        Product updatedProduct = productDer.convert(bodyNode);
 
-        product.setName(updatedProduct.getName());
-        product.setCategory(updatedProduct.getCategory());
-        product.setDevice(updatedProduct.getDevice());
-        product.setPrice(updatedProduct.getPrice());
-        product.setPurchasePrice(updatedProduct.getPurchasePrice());
+        product.setName(getValue(reqBody,"name", String.class));
+        product.setCategory(JsonUtils.getValue(reqBody, "category.id", categoryEjb));
+        product.setDevice(JsonUtils.getValue(reqBody, "device.id", deviceEjb));
+        product.setPrice(getValue(reqBody,"price", BigDecimal.class));
+        product.setPurchasePrice(getValue(reqBody,"purchasePrice", BigDecimal.class));
 
         Product savedProduct = productEjb.update(product);
         return Response.ok(productSer.convert(savedProduct)).build();

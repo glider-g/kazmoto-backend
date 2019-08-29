@@ -14,7 +14,7 @@ public class UniqueFieldChecker<T> {
         return this;
     }
 
-    public void validate(T t, boolean update){
+    public void check(T t, boolean update){
         for (Checker checker : checkers) {
             T exist = checker.function.apply(t);
             if(exist != null && (!update || !t.equals(exist))){

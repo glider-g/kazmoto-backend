@@ -9,7 +9,6 @@ import kz.kazmoto.glob.exceptions.NotFoundCodeException;
 import kz.kazmoto.glob.exceptions.ValidateCodeException;
 import kz.kazmoto.org.ejb.UserEjb;
 import kz.kazmoto.org.model.User;
-import kz.kazmoto.rest.serializer.org.UserRegisterDer;
 import kz.kazmoto.rest.serializer.org.UserSer;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -23,7 +22,8 @@ import javax.ws.rs.core.Response;
 import java.util.Calendar;
 import java.util.Date;
 
-import static kz.kazmoto.rest.utility.jackson.Serializer.createObjectNode;
+import static kz.kazmoto.rest.utility.JsonUtils.createObjectNode;
+import static kz.kazmoto.rest.utility.JsonUtils.getValue;
 
 @Path("org/users")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -32,23 +32,27 @@ public class UserRest {
     @EJB private UserEjb userEjb;
     @EJB private AppEjb appEjb;
 
-    private UserRegisterDer userRegisterDer = new UserRegisterDer();
     private UserSer userSer = new UserSer();
 
     @POST
     @Path("registration")
-    public Response registration(JsonNode bodyNode) {
-        User user = userRegisterDer.convert(bodyNode);
-        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+    public Response registration(JsonNode reqBody) {
+        User user = new User();
+        user.setUsername(getValue(reqBody,"username", String.class));
+        user.setFirstName(getValue(reqBody, "firstName", String.class));
+        user.setLastName(getValue(reqBody, "lastName", String.class));
+        String password = getValue(reqBody, "password", String.class);
+        user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+
         User savedUser = userEjb.create(user);
         return Response.ok(userSer.convert(savedUser)).build();
     }
 
     @POST
     @Path("login")
-    public Response login(JsonNode bodyNode) {
-        String username = bodyNode.get("username").asText();
-        String password = bodyNode.get("password").asText();
+    public Response login(JsonNode reqBody) {
+        String username = getValue(reqBody,"username", String.class);
+        String password = getValue(reqBody,"password", String.class);
 
         User user = userEjb.findByUsername(username);
         if (user == null) {

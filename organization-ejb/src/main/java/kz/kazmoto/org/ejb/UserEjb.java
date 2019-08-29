@@ -2,7 +2,6 @@ package kz.kazmoto.org.ejb;
 
 
 
-import kz.kazmoto.glob.exceptions.UniqueFieldCodeException;
 import kz.kazmoto.glob.utils.EJBUtils;
 import kz.kazmoto.glob.utils.UniqueFieldChecker;
 import kz.kazmoto.org.model.User;
@@ -32,13 +31,13 @@ public class UserEjb {
         return EJBUtils.getSingleResult(q);
     }
     public User create(User user){
-        fieldChecker.validate(user, false);
+        fieldChecker.check(user, false);
 
         return em.merge(user);
     }
 
     public User update(User user){
-        fieldChecker.validate(user, true);
+        fieldChecker.check(user, true);
 
         return em.merge(user);
     }

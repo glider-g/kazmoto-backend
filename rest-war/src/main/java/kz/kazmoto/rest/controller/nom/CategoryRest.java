@@ -4,15 +4,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import kz.kazmoto.glob.exceptions.NotFoundCodeException;
 import kz.kazmoto.nom.ejb.CategoryEjb;
 import kz.kazmoto.nom.model.Category;
-import kz.kazmoto.rest.serializer.nom.CategoryDer;
 import kz.kazmoto.rest.serializer.nom.CategorySer;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+
+import static kz.kazmoto.rest.utility.JsonUtils.getValue;
 
 
 @Path("nom/product-groups")
@@ -23,7 +23,6 @@ public class CategoryRest {
     private CategoryEjb categoryEjb;
 
     private CategorySer categorySer = new CategorySer();
-    private CategoryDer categoryDer = new CategoryDer();
 
     @GET
     public Response list(
@@ -44,8 +43,9 @@ public class CategoryRest {
     }
 
     @POST
-    public Response create(JsonNode bodyNode) {
-        Category category = categoryDer.convert(bodyNode);
+    public Response create(JsonNode reqBody) {
+        Category category = new Category();
+        category.setName(getValue(reqBody,"name", String.class));
 
         Category savedCategory = categoryEjb.create(category);
         return Response.ok(categorySer.convert(savedCategory)).build();
@@ -53,14 +53,12 @@ public class CategoryRest {
 
     @POST
     @Path("{id}")
-    public Response update(@PathParam("id") Long id, JsonNode bodyNod) {
+    public Response update(@PathParam("id") Long id, JsonNode reqBody) {
         Category category = categoryEjb.findById(id);
         if (category == null){
             throw new NotFoundCodeException("Category with this id not exist");
         }
-        Category updatedCategory = categoryDer.convert(bodyNod);
-
-        category.setName(updatedCategory.getName());
+        category.setName(getValue(reqBody,"name", String.class));
 
         Category savedCategory = categoryEjb.update(category);
         return Response.ok(categorySer.convert(savedCategory)).build();

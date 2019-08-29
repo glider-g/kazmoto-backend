@@ -47,7 +47,7 @@ public class ProductEjb {
     }
 
     public Product create(Product product) {
-        fieldChecker.validate(product, false);
+        fieldChecker.check(product, false);
 
         product.setBarcode(String.valueOf(System.currentTimeMillis()));
 
@@ -57,7 +57,7 @@ public class ProductEjb {
     }
 
     public Product update(Product product) {
-        fieldChecker.validate(product, true);
+        fieldChecker.check(product, true);
         return em.merge(product);
     }
 }
