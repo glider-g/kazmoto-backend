@@ -12,5 +12,6 @@
     <module>global-ejb</module>
   <module>organization-ejb</module>
   <module>nomenclature-ejb</module>
+  <module>operation</module>
   </modules>
 </project>

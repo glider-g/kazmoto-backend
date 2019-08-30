@@ -22,7 +22,6 @@ public class StockEjb {
         return EJBUtils.getSingleResult(q);
     }
 
-    @Deprecated
     public BigInteger getQuantityByProduct(Long productId) {
         Query q = em.createNamedQuery("Stock.getQuantityByProduct", Stock.class);
         q.setParameter("productId", productId);

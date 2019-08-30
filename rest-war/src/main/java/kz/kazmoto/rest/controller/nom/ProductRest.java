@@ -7,7 +7,6 @@ import kz.kazmoto.nom.ejb.DeviceEjb;
 import kz.kazmoto.nom.ejb.ProductEjb;
 import kz.kazmoto.nom.model.Product;
 import kz.kazmoto.rest.serializer.nom.ProductSer;
-import kz.kazmoto.rest.utility.JsonUtils;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
@@ -16,7 +15,6 @@ import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static kz.kazmoto.rest.utility.JsonUtils.getValue;
 import static kz.kazmoto.rest.utility.JsonUtils.getValue;
 
 
@@ -56,8 +54,8 @@ public class ProductRest {
         Product product = new Product();
 
         product.setName(getValue(reqBody,"name", String.class));
-        product.setCategory(JsonUtils.getValue(reqBody, "category.id", categoryEjb));
-        product.setDevice(JsonUtils.getValue(reqBody, "device.id", deviceEjb));
+        product.setCategory(getValue(reqBody, "category.id", categoryEjb));
+        product.setDevice(getValue(reqBody, "device.id", deviceEjb));
         product.setPrice(getValue(reqBody,"price", BigDecimal.class));
         product.setPurchasePrice(getValue(reqBody,"purchasePrice", BigDecimal.class));
 
@@ -74,8 +72,8 @@ public class ProductRest {
         }
 
         product.setName(getValue(reqBody,"name", String.class));
-        product.setCategory(JsonUtils.getValue(reqBody, "category.id", categoryEjb));
-        product.setDevice(JsonUtils.getValue(reqBody, "device.id", deviceEjb));
+        product.setCategory(getValue(reqBody, "category.id", categoryEjb));
+        product.setDevice(getValue(reqBody, "device.id", deviceEjb));
         product.setPrice(getValue(reqBody,"price", BigDecimal.class));
         product.setPurchasePrice(getValue(reqBody,"purchasePrice", BigDecimal.class));
 
