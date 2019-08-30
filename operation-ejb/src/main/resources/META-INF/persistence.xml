@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
     <persistence-unit name="kazmoto-opr" transaction-type="JTA">
+        <!--suppress JpaDomInspection -->
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>jdbc/kazmoto</jta-data-source>
+
+        <class>kz.kazmoto.nom.model.Product</class>
+        <class>kz.kazmoto.nom.model.Category</class>
+        <class>kz.kazmoto.nom.model.Device</class>
+        <class>kz.kazmoto.org.model.User</class>
+
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />

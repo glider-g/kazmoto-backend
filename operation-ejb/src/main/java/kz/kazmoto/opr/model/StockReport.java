@@ -15,6 +15,7 @@ import java.math.BigInteger;
 })
 public class StockReport {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull

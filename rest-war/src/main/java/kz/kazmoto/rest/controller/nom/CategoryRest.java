@@ -15,7 +15,7 @@ import java.util.List;
 import static kz.kazmoto.rest.utility.JsonUtils.getValue;
 
 
-@Path("nom/product-groups")
+@Path("nom/categories")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class CategoryRest {
@@ -26,8 +26,7 @@ public class CategoryRest {
 
     @GET
     public Response list(
-            @QueryParam("name") @DefaultValue("") String name,
-            @QueryParam("deviceId") Long deviceId) {
+            @QueryParam("name") @DefaultValue("") String name) {
         List<Category> categories = categoryEjb.findByName(name);
         return Response.ok(categorySer.convert(categories)).build();
     }

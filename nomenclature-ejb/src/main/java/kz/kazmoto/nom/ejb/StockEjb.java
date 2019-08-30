@@ -23,10 +23,10 @@ public class StockEjb {
     }
 
     public BigInteger getQuantityByProduct(Long productId) {
-        Query q = em.createNamedQuery("Stock.getQuantityByProduct", Stock.class);
+        TypedQuery<BigInteger> q = em.createNamedQuery("Stock.getQuantityByProduct", BigInteger.class);
         q.setParameter("productId", productId);
         try {
-            return (BigInteger) q.getSingleResult();
+            return q.getSingleResult();
         } catch (NoResultException e) {
             throw new IllegalArgumentException("stock not found", e);
         }

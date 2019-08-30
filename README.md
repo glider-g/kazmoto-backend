@@ -1,4 +1,6 @@
 ## Problems
-* device code create update validation problem ( validate into ejb)
+* remove getValue with ejb
+* remove StdEjb
+* fix ejb rollback
 
 Deprecate Der serializer 

@@ -52,7 +52,7 @@ public class ProductEjb {
         product.setBarcode(String.valueOf(System.currentTimeMillis()));
 
         Product savedProduct = em.merge(product);
-        stockEjb.createForProduct(product);
+        stockEjb.createForProduct(savedProduct);
         return savedProduct;
     }
 

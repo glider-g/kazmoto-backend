@@ -1,4 +1,4 @@
-package kz.kazmoto.rest;
+package kz.kazmoto.rest.filter;
 
 
 import javax.ws.rs.ApplicationPath;

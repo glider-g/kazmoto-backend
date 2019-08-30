@@ -18,7 +18,7 @@ public class UniqueFieldChecker<T> {
         for (Checker checker : checkers) {
             T exist = checker.function.apply(t);
             if(exist != null && (!update || !t.equals(exist))){
-                throw new UniqueFieldCodeException(t.getClass().getSimpleName() + " with field '"+checker.name+"' already exist");
+                throw new UniqueFieldCodeException(t.getClass().getSimpleName() + " with this "+checker.name+" already exist");
             }
         }
     }

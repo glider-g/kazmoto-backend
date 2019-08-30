@@ -39,15 +39,15 @@ public class SaleEjb {
         return q.getResultList();
     }
 
-    public void create(Sale sale) {
+    public Sale create(Sale sale) {
         sale.setActive(Boolean.FALSE);
-        em.persist(sale);
+        return em.merge(sale);
     }
 
     public void activate(Long saleId){
         Sale sale = findById(saleId);
         if(sale == null) throw new NotFoundCodeException("Sale not found");
-        if (sale.isActive())throw new BadRequestCodeException("Sale already conducted");
+        if (sale.isActive())throw new BadRequestCodeException("Sale already activated");
         if (saleProductEjb.countBySale(sale.getId())==0L){
             throw new BadRequestCodeException("Sale cant be empty (without any product)");
         }
@@ -58,7 +58,7 @@ public class SaleEjb {
     }
 
     public void remove(Sale sale) {
-        if (sale.isActive())throw new BadRequestCodeException("Sale already conducted");
+        if (sale.isActive())throw new BadRequestCodeException("Sale already activated");
         if (saleProductEjb.countBySale(sale.getId())!=0L)throw new BadRequestCodeException("Can't remove not empty sale");
         em.remove(sale);
     }

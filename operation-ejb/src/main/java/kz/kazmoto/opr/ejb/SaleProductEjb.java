@@ -2,6 +2,7 @@ package kz.kazmoto.opr.ejb;
 
 
 import kz.kazmoto.glob.exceptions.BadRequestCodeException;
+import kz.kazmoto.glob.exceptions.NotFoundCodeException;
 import kz.kazmoto.glob.utils.EJBUtils;
 import kz.kazmoto.opr.model.SaleProduct;
 
@@ -44,15 +45,19 @@ public class SaleProductEjb {
         return EJBUtils.getSingleResult(q, 0L);
     }
 
-    public void create(SaleProduct saleProduct) {
+    public SaleProduct create(SaleProduct saleProduct) {
         SaleProduct oldSaleProduct = findBySaleAndProduct(saleProduct.getSale().getId(), saleProduct.getProduct().getId());
         if (oldSaleProduct != null) throw new BadRequestCodeException("product already added to sale");
 
-        em.persist(saleProduct);
+        return em.merge(saleProduct);
     }
 
-    public void remove(SaleProduct saleProduct) {
+    public void remove(Long id) {
+        SaleProduct saleProduct = findById(id);
+
+        if(saleProduct == null) throw new NotFoundCodeException("sale not found");
         if(saleProduct.getSale().isActive()) throw new BadRequestCodeException("sale already activated");
-        em.remove(em.merge(saleProduct));
+
+        em.remove(saleProduct);
     }
 }

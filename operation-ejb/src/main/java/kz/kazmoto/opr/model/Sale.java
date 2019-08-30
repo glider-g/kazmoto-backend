@@ -1,5 +1,6 @@
 package kz.kazmoto.opr.model;
 
+import kz.kazmoto.glob.exceptions.BadRequestCodeException;
 import kz.kazmoto.org.model.User;
 
 import javax.persistence.*;
@@ -14,8 +15,8 @@ import javax.validation.constraints.NotNull;
         @NamedQuery(name = "Sale.findByFilter",
                 query = "SELECT s " +
                         "FROM Sale s " +
-                        "JOIN FETCH s.user " +
-                        "WHERE (:userId is null OR s.user.id = :userId) " +
+                        "JOIN FETCH s.manager " +
+                        "WHERE (:userId is null OR s.manager.id = :userId) " +
                         "AND (:type is null OR s.type = :type) " +
                         "AND (:customer is null OR s.customer = :customer) " +
                         "AND (:active is null OR s.active = :active) "),
@@ -27,8 +28,8 @@ public class Sale {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "manager_id")
+    private User manager;
 
     @NotNull
     private String comment;
@@ -49,12 +50,12 @@ public class Sale {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public User getManager() {
+        return manager;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setManager(User user) {
+        this.manager = user;
     }
 
     public String getComment() {
@@ -90,7 +91,30 @@ public class Sale {
     }
 
     public enum Type {
-        RETAIL, WHOLESALE;
+        RETAIL("retail"),
+        WHOLESALE("wholesale");
+
+        private String name;
+
+        Type(String name) {
+            this.name = name;
+        }
+
+        public static Type findByName(String name){
+            switch (name){
+                case "retail":
+                    return Type.RETAIL;
+                case "wholesale":
+                    return Type.WHOLESALE;
+                default:
+                    throw new BadRequestCodeException("Sale type not correct");
+            }
+        }
+
+        public Type setName(String name) {
+            this.name = name;
+            return this;
+        }
     }
 
 }

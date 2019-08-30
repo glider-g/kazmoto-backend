@@ -19,7 +19,7 @@ public class SaleSer extends Serializer<Sale> {
     protected ObjectNode serialize(Sale sale) {
         ObjectNode node = createObjectNode();
         node.put("id", sale.getId());
-        node.set("user", userSer.convert(sale.getUser()));
+        node.set("manager", userSer.convert(sale.getManager()));
         node.put("comment", sale.getComment());
         node.put("type", saleTypeToString(sale.getType()));
         node.put("active", sale.isActive());

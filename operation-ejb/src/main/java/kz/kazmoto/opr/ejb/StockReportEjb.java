@@ -53,6 +53,7 @@ public class StockReportEjb {
             stockReport.setOldQuantity(oldQuantity);
             stockReport.setNewQuantity(newQuantity);
             em.persist(stockReport);
+            throw new NullPointerException();
         }
     }
 

@@ -18,7 +18,7 @@ import java.math.BigInteger;
         @NamedQuery(name = "SaleProduct.findBySaleAndProduct",
                 query = "SELECT sp FROM SaleProduct sp " +
                         "WHERE sp.sale.id = :saleId " +
-                        "AND (:productId is null OR p.id = :productId) "),
+                        "AND (:productId is null OR sp.product.id = :productId) "),
         @NamedQuery(name = "SaleProduct.countBySale",
                 query = "SELECT COUNT(sp) FROM SaleProduct sp " +
                         "WHERE sp.sale.id = :saleId "),

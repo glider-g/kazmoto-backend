@@ -7,10 +7,14 @@ import kz.kazmoto.nom.ejb.DeviceEjb;
 import kz.kazmoto.nom.model.Device;
 import kz.kazmoto.rest.serializer.nom.DeviceSer;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 
 import static kz.kazmoto.rest.utility.JsonUtils.getValue;
@@ -18,6 +22,7 @@ import static kz.kazmoto.rest.utility.JsonUtils.getValue;
 @Path("nom/devices")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@PermitAll
 public class DeviceRest {
     @EJB
     private DeviceEjb deviceEjb;
@@ -54,7 +59,8 @@ public class DeviceRest {
 
     @POST
     @Path("{id}")
-    public Response update(@PathParam("id") Long id, JsonNode reqNode) {
+    @RolesAllowed("4rrgdfgdf")
+    public Response update(@PathParam("id") Long id, JsonNode reqNode, @Context SecurityContext sc) {
         Device device = deviceEjb.findById(id);
         if (device == null){
             throw new NotFoundCodeException("Device with this id not exist");

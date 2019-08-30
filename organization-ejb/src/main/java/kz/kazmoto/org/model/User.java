@@ -1,14 +1,16 @@
 package kz.kazmoto.org.model;
 
 import javax.persistence.*;
+import javax.security.auth.Subject;
 import javax.validation.constraints.NotNull;
+import java.security.Principal;
 
 @Entity
 @Table(name = "org__user")
 @NamedQuery(name = "User.findByUsername",
         query = "SELECT u FROM User u " +
                 "WHERE u.username = :username ")
-public class User {
+public class User implements Principal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -65,5 +67,15 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Override
+    public String getName() {
+        return username;
+    }
+
+    @Override
+    public boolean implies(Subject subject) {
+        return false;
     }
 }
