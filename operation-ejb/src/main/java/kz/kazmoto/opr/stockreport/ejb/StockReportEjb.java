@@ -5,6 +5,7 @@ import kz.kazmoto.nom.ejb.StockEjb;
 import kz.kazmoto.nom.model.Product;
 import kz.kazmoto.opr.sale.model.SaleProduct;
 import kz.kazmoto.opr.stockreport.model.StockReport;
+import kz.kazmoto.opr.supply.model.SupplyProduct;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -34,10 +35,9 @@ public class StockReportEjb {
                         saleProduct.getQuantity()))
                 .collect(Collectors.toList());
         createReport(stockChanges, StockReport.OperationType.SALE);
-
     }
 
-    private void createReport(List<StockChange> stockChanges, StockReport.OperationType operationType) {
+    public void createReport(List<StockChange> stockChanges, StockReport.OperationType operationType) {
         stockChanges.sort(Comparator.comparingLong(stockChange -> stockChange.getProduct().getId()));
 
         for (StockChange stockChange : stockChanges) {
@@ -62,12 +62,12 @@ public class StockReportEjb {
         return q.getResultList();
     }
 
-    private static class StockChange {
+    public static class StockChange {
         private Long entityId;
         private Product product;
         private BigInteger quantity;
 
-        StockChange(Long entityId, Product product, BigInteger quantity) {
+        public StockChange(Long entityId, Product product, BigInteger quantity) {
             this.entityId = entityId;
             this.product = product;
             this.quantity = quantity;
