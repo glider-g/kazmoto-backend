@@ -30,13 +30,13 @@ public class SaleRest {
 
     @GET
     public Response list(
-            @QueryParam("userId") Long userId,
+            @QueryParam("managerId") Long managerId,
             @QueryParam("type") String typeName,
             @QueryParam("customer") String customer,
             @QueryParam("active") Boolean active) {
 
         Sale.Type type = typeName!=null?Sale.Type.findByName(typeName):null;
-        List<Sale> sales = saleEjb.findByFilter(userId, type, customer, active);
+        List<Sale> sales = saleEjb.findByFilter(managerId, type, customer, active);
         return Response.ok(saleSer.convert(sales)).build();
     }
 

@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
                 query = "SELECT s " +
                         "FROM Sale s " +
                         "JOIN FETCH s.manager " +
-                        "WHERE (:userId is null OR s.manager.id = :userId) " +
+                        "WHERE (:managerId is null OR s.manager.id = :managerId) " +
                         "AND (:type is null OR s.type = :type) " +
                         "AND (:customer is null OR s.customer = :customer) " +
                         "AND (:active is null OR s.active = :active) "),

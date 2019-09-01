@@ -31,9 +31,9 @@ public class SaleEjb {
         return EJBUtils.getSingleResult(q);
     }
 
-    public List<Sale> findByFilter(Long userId, Sale.Type type, String customer, Boolean active) {
+    public List<Sale> findByFilter(Long managerId, Sale.Type type, String customer, Boolean active) {
         TypedQuery<Sale> q = em.createNamedQuery("Sale.findByFilter", Sale.class);
-        q.setParameter("userId", userId);
+        q.setParameter("managerId", managerId);
         q.setParameter("type", type);
         q.setParameter("customer", customer);
         q.setParameter("active", active);
