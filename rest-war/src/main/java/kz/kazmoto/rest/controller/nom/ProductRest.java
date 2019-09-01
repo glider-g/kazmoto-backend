@@ -54,8 +54,8 @@ public class ProductRest {
         Product product = new Product();
 
         product.setName(getValue(reqBody,"name", String.class));
-        product.setCategory(getValue(reqBody, "category.id", categoryEjb));
-        product.setDevice(getValue(reqBody, "device.id", deviceEjb));
+        product.setCategory(getValue(reqBody, "category.id", Long.class, id -> categoryEjb.findById(id)));
+        product.setDevice(getValue(reqBody, "device.id", Long.class, id -> deviceEjb.findById(id)));
         product.setPrice(getValue(reqBody,"price", BigDecimal.class));
         product.setPurchasePrice(getValue(reqBody,"purchasePrice", BigDecimal.class));
 
@@ -72,8 +72,8 @@ public class ProductRest {
         }
 
         product.setName(getValue(reqBody,"name", String.class));
-        product.setCategory(getValue(reqBody, "category.id", categoryEjb));
-        product.setDevice(getValue(reqBody, "device.id", deviceEjb));
+        product.setCategory(getValue(reqBody, "category.id", Long.class, id_ -> categoryEjb.findById(id_)));
+        product.setDevice(getValue(reqBody, "device.id", Long.class ,id_ -> deviceEjb.findById(id_)));
         product.setPrice(getValue(reqBody,"price", BigDecimal.class));
         product.setPurchasePrice(getValue(reqBody,"purchasePrice", BigDecimal.class));
 

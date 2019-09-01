@@ -2,7 +2,6 @@ package kz.kazmoto.nom.ejb;
 
 
 import kz.kazmoto.glob.utils.EJBUtils;
-import kz.kazmoto.glob.utils.StdEjb;
 import kz.kazmoto.glob.utils.UniqueFieldChecker;
 import kz.kazmoto.nom.model.Category;
 
@@ -15,14 +14,13 @@ import java.util.List;
 
 @Stateless
 @LocalBean
-public class CategoryEjb implements StdEjb<Category> {
+public class CategoryEjb {
     @PersistenceContext(unitName = "kazmoto-nom")
     private EntityManager em;
 
     private UniqueFieldChecker<Category> fieldChecker = new UniqueFieldChecker<Category>()
             .addChecker("name", category -> findByNameExact(category.getName()));
 
-    @Override
     public Category findById(Long id) {
         return em.find(Category.class, id);
     }
@@ -39,14 +37,12 @@ public class CategoryEjb implements StdEjb<Category> {
         return EJBUtils.getSingleResult(q);
     }
 
-    @Override
     public Category create(Category category) {
         fieldChecker.check(category, false);
 
         return em.merge(category);
     }
 
-    @Override
     public Category update(Category category) {
         fieldChecker.check(category, true);
 

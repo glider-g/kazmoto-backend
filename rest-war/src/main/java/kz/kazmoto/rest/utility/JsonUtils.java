@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import kz.kazmoto.glob.exceptions.NotFoundCodeException;
 import kz.kazmoto.glob.exceptions.ValidateCodeException;
-import kz.kazmoto.glob.utils.StdEjb;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -19,13 +18,6 @@ public class JsonUtils {
     }
     public static ArrayNode createArrayNode() {
         return new ObjectMapper().createArrayNode();
-    }
-
-    public static <T> T getValue(JsonNode node, String  key, StdEjb<T> stdEjb){
-        Long entityId = getValue(node, key, Long.class, false);
-        T entity = stdEjb.findById(entityId);
-        if (entity == null) throw new NotFoundCodeException(key + " not found");
-        return entity;
     }
 
     public static <T,V> V getValue(JsonNode node, String  key, Class<T> returnType, Function<T,V> converter){
