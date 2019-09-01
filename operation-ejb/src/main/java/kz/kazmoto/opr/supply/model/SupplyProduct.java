@@ -14,7 +14,6 @@ import java.math.BigInteger;
 @NamedQueries({
         @NamedQuery(name = "SupplyProduct.findById",
                 query = "SELECT sp FROM SupplyProduct sp " +
-                        "INNER JOIN FETCH sp.supply s " +
                         "WHERE sp.id = :id "),
         @NamedQuery(name = "SupplyProduct.findBySupplyAndProduct",
                 query = "SELECT sp FROM SupplyProduct sp " +
