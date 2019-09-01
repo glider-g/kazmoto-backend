@@ -1,10 +1,10 @@
-package kz.kazmoto.opr.ejb;
+package kz.kazmoto.opr.stockreport.ejb;
 
 
 import kz.kazmoto.nom.ejb.StockEjb;
 import kz.kazmoto.nom.model.Product;
-import kz.kazmoto.opr.model.SaleProduct;
-import kz.kazmoto.opr.model.StockReport;
+import kz.kazmoto.opr.sale.model.SaleProduct;
+import kz.kazmoto.opr.stockreport.model.StockReport;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -53,7 +53,6 @@ public class StockReportEjb {
             stockReport.setOldQuantity(oldQuantity);
             stockReport.setNewQuantity(newQuantity);
             em.persist(stockReport);
-            throw new NullPointerException();
         }
     }
 

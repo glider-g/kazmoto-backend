@@ -1,4 +1,4 @@
-package kz.kazmoto.opr.model;
+package kz.kazmoto.opr.stockreport.model;
 
 import kz.kazmoto.nom.model.Product;
 

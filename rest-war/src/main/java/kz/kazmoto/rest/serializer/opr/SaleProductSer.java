@@ -1,7 +1,7 @@
 package kz.kazmoto.rest.serializer.opr;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import kz.kazmoto.opr.model.SaleProduct;
+import kz.kazmoto.opr.sale.model.SaleProduct;
 import kz.kazmoto.rest.serializer.nom.ProductSer;
 import kz.kazmoto.rest.utility.Serializer;
 

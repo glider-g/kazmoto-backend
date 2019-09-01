@@ -1,11 +1,12 @@
-package kz.kazmoto.opr.ejb;
+package kz.kazmoto.opr.sale.ejb;
 
 
 import kz.kazmoto.glob.exceptions.BadRequestCodeException;
 import kz.kazmoto.glob.exceptions.NotFoundCodeException;
 import kz.kazmoto.glob.utils.EJBUtils;
-import kz.kazmoto.opr.model.Sale;
-import kz.kazmoto.opr.model.SaleProduct;
+import kz.kazmoto.opr.stockreport.ejb.StockReportEjb;
+import kz.kazmoto.opr.sale.model.Sale;
+import kz.kazmoto.opr.sale.model.SaleProduct;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;

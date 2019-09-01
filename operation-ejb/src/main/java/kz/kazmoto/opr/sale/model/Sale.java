@@ -1,4 +1,4 @@
-package kz.kazmoto.opr.model;
+package kz.kazmoto.opr.sale.model;
 
 import kz.kazmoto.glob.exceptions.BadRequestCodeException;
 import kz.kazmoto.org.model.User;

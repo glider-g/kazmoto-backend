@@ -2,11 +2,10 @@ package kz.kazmoto.rest.controller.opr;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import kz.kazmoto.glob.exceptions.BadRequestCodeException;
-import kz.kazmoto.glob.exceptions.NotFoundCodeException;
 import kz.kazmoto.nom.ejb.ProductEjb;
-import kz.kazmoto.opr.ejb.SaleEjb;
-import kz.kazmoto.opr.ejb.SaleProductEjb;
-import kz.kazmoto.opr.model.SaleProduct;
+import kz.kazmoto.opr.sale.ejb.SaleEjb;
+import kz.kazmoto.opr.sale.ejb.SaleProductEjb;
+import kz.kazmoto.opr.sale.model.SaleProduct;
 import kz.kazmoto.rest.serializer.opr.SaleProductSer;
 import kz.kazmoto.rest.utility.MessageResponse;
 
