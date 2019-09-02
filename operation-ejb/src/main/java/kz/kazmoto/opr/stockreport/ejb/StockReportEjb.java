@@ -27,16 +27,6 @@ public class StockReportEjb {
     @EJB
     StockEjb stockEjb;
 
-    public void createReport(List<SaleProduct> saleProducts) {
-        List<StockChange> stockChanges = saleProducts.stream().map(saleProduct ->
-                new StockChange(
-                        saleProduct.getId(),
-                        saleProduct.getProduct(),
-                        saleProduct.getQuantity()))
-                .collect(Collectors.toList());
-        createReport(stockChanges, StockReport.OperationType.SALE);
-    }
-
     public void createReport(List<StockChange> stockChanges, StockReport.OperationType operationType) {
         stockChanges.sort(Comparator.comparingLong(stockChange -> stockChange.getProduct().getId()));
 

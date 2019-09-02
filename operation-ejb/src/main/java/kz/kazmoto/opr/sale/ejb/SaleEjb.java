@@ -7,6 +7,7 @@ import kz.kazmoto.glob.utils.EJBUtils;
 import kz.kazmoto.opr.stockreport.ejb.StockReportEjb;
 import kz.kazmoto.opr.sale.model.Sale;
 import kz.kazmoto.opr.sale.model.SaleProduct;
+import kz.kazmoto.opr.stockreport.model.StockReport;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -15,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 @LocalBean
@@ -55,7 +57,14 @@ public class SaleEjb {
         sale.setActive(true);
         em.persist(sale);
         List<SaleProduct> saleProducts = saleProductEjb.findBySale(sale.getId());
-        stockReportEjb.createReport(saleProducts);
+
+        List<StockReportEjb.StockChange> stockChanges = saleProducts.stream().map(saleProduct ->
+                new StockReportEjb.StockChange(
+                        saleProduct.getId(),
+                        saleProduct.getProduct(),
+                        saleProduct.getQuantity()))
+                .collect(Collectors.toList());
+        stockReportEjb.createReport(stockChanges, StockReport.OperationType.SALE);
     }
 
     public void remove(Sale sale) {
