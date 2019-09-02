@@ -94,8 +94,8 @@ public class StockReport {
     public enum OperationType {
         SALE(false),
         SUPPLY(true),
-        DECOMMISSION(false),
-        DEBIT(true);
+        LOSS(false),
+        EXCESS(true);
         private boolean addition;
         OperationType(boolean addition){
             this.addition = addition;

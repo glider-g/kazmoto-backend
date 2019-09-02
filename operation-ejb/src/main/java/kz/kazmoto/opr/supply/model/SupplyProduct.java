@@ -44,9 +44,6 @@ public class SupplyProduct {
     @NotNull
     private BigInteger quantity;
 
-    public SupplyProduct() {
-    }
-
     public Long getId() {
         return id;
     }
